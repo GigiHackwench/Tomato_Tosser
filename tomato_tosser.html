@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background-color: #fff;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 300px;
+        }
+
+        #timer {
+            font-size: 64px;
+            margin: 20px;
+            color: #333;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        #startButton {
+            background-color: #4CAF50;
+        }
+
+        #startButton:hover {
+            background-color: #45a049;
+        }
+
+        #resetButton {
+            background-color: #f44336;
+        }
+
+        #resetButton:hover {
+            background-color: #d32f2a;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Pomodoro Timer</h1>
+        <div id="timer">25:00</div>
+        <div class="button-container">
+            <button id="startButton" class="button">Start</button>
+            <button id="resetButton" class="button">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        let timer;
+        let isRunning = false;
+        let minutes = 25;
+        let seconds = 0;
+
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                document.getElementById("startButton").textContent = "Pause";
+                timer = setInterval(updateTimer, 1000);
+            } else {
+                isRunning = false;
+                document.getElementById("startButton").textContent = "Resume";
+                clearInterval(timer);
+            }
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            document.getElementById("startButton").textContent = "Start";
+            minutes = 25;
+            seconds = 0;
+            updateTimerDisplay();
+        }
+
+        function updateTimer() {
+            if (minutes === 0 && seconds === 0) {
+                clearInterval(timer);
+                alert("Time's up!");
+                isRunning = false;
+                document.getElementById("startButton").textContent = "Start";
+            } else {
+                if (seconds === 0) {
+                    minutes--;
+                    seconds = 59;
+                } else {
+                    seconds--;
+                }
+                updateTimerDisplay();
+            }
+        }
+
+        function updateTimerDisplay() {
+            document.getElementById("timer").textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        document.getElementById("startButton").addEventListener("click", startTimer);
+        document.getElementById("resetButton").addEventListener("click", resetTimer);
+    </script>
+</body>
+</html>
